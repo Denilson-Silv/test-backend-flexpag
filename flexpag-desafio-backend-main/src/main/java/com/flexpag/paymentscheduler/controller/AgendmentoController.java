@@ -23,13 +23,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.flexpag.paymentscheduler.domain.Agendamento;
 import com.flexpag.paymentscheduler.domain.dtos.AgendamentoDTO;
 
-import com.flexpag.paymentscheduler.service.agendamentoServic;
+import com.flexpag.paymentscheduler.service.AgendamentoService;
 
 @RestController
 @RequestMapping(value = "/agendamento")
 public class AgendmentoController {
 	@Autowired
-	private agendamentoServic service;
+	private AgendamentoService service;
 
 	@GetMapping
 	public ResponseEntity<List<AgendamentoDTO>> findAll() {
