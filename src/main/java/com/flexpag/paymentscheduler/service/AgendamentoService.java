@@ -34,30 +34,32 @@ public class AgendamentoService {
 	}
 
 	public Agendamento update(long id, @Validated AgendamentoDTO objDTO) {
-	
+
 		if (agendamentoRepository.existsById(id)) {
 			Agendamento oldObj = findById(id);
-			if (oldObj.getStatus().equals(Status.PAID)) {
+			if (oldObj.getStatus().equals(Status.PENDING)) {
 				oldObj.setDataHora(objDTO.getDataHora());
-			throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+				return agendamentoRepository.save(oldObj);
+
+			} else {
+				throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+			}
 		} else {
-			return agendamentoRepository.save(oldObj);
-		}
-		}else {
 			throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
 		}
-		
+
 	}
 
 	public void delete(Long id) {
 
 		if (agendamentoRepository.existsById(id)) {
 			Agendamento obj = findById(id);
-			if (obj.getStatus().equals(Status.PAID)) {
-				throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+			if (obj.getStatus().equals(Status.PENDING)) {
+				agendamentoRepository.deleteById(id);
 
 			} else {
-				agendamentoRepository.deleteById(id);
+				throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+
 			}
 
 		} else {
