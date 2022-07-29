@@ -29,6 +29,7 @@ public class AgendamentoService {
 	}
 
 	public Agendamento create(AgendamentoDTO objDTO) {
+		objDTO.setStatus(Status.PENDING);
 		Agendamento newObj = new Agendamento(objDTO);
 		return agendamentoRepository.save(newObj);
 	}
@@ -42,8 +43,25 @@ public class AgendamentoService {
 				return agendamentoRepository.save(oldObj);
 
 			} else {
-				throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+				throw new RuntimeException("Operação não permitida, Status PAID.");
 			}
+		} else {
+			throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+		}
+
+	}
+
+	public Agendamento pagar(long id) {
+
+		if (agendamentoRepository.existsById(id)) {
+			Agendamento oldObj = findById(id);
+			if (oldObj.getStatus().equals(Status.PENDING)) {
+				oldObj.setStatus(Status.PAID);
+				return agendamentoRepository.save(oldObj);
+			} else {
+				throw new RuntimeException("Operação não permitida, Status PAID.");
+			}
+
 		} else {
 			throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
 		}
@@ -58,7 +76,7 @@ public class AgendamentoService {
 				agendamentoRepository.deleteById(id);
 
 			} else {
-				throw new org.springframework.dao.DataIntegrityViolationException("Agendamento não Encontrado");
+				throw new RuntimeException("Operação não permitida, Status PAID.");
 
 			}
 

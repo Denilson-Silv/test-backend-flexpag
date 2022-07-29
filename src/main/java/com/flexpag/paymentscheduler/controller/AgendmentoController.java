@@ -1,6 +1,5 @@
 package com.flexpag.paymentscheduler.controller;
 
-
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flexpag.paymentscheduler.domain.Agendamento;
 import com.flexpag.paymentscheduler.domain.dtos.AgendamentoDTO;
-import com.flexpag.paymentscheduler.domain.enuns.Status;
 import com.flexpag.paymentscheduler.service.AgendamentoService;
 
 @RestController
@@ -44,17 +42,23 @@ public class AgendmentoController {
 
 	@PostMapping
 	public ResponseEntity<Long> post(@Validated @RequestBody AgendamentoDTO objDTO) {
-		objDTO.setStatus(Status.PENDING);
+
 		Agendamento newObj = service.create(objDTO);
 		return ResponseEntity.ok(newObj.getId());
 	}
 
-	 @PutMapping(value = "/{id}")
-	 public ResponseEntity<AgendamentoDTO> update(@PathVariable(value = "id") long
-	 id, @Validated @RequestBody AgendamentoDTO objDTO) {
-	 Agendamento obj = service.update(id, objDTO);
-	 return ResponseEntity.ok().body(new AgendamentoDTO(obj));
-	 }
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<AgendamentoDTO> update(@PathVariable(value = "id") long id,
+			@Validated @RequestBody AgendamentoDTO objDTO) {
+		Agendamento obj = service.update(id, objDTO);
+		return ResponseEntity.ok().body(new AgendamentoDTO(obj));
+	}
+
+	@PutMapping(value = "/pagar/{id}")
+	public ResponseEntity<AgendamentoDTO> pagar(@PathVariable(value = "id") long id){
+		Agendamento obj = service.pagar(id);
+		return ResponseEntity.ok().body(new AgendamentoDTO(obj));
+	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Object> delete(@PathVariable(value = "id") long id) {

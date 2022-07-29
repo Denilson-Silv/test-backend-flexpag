@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.flexpag.paymentscheduler.domain.dtos.AgendamentoDTO;
 import com.flexpag.paymentscheduler.domain.enuns.Status;
 
@@ -20,7 +18,6 @@ public class Agendamento {
 
 	private String nome;
 	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime dataHora ;
 	
 
